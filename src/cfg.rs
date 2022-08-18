@@ -8,27 +8,7 @@ pub struct Config {
 
 struct PathAnalyzer;
 
-impl Config {
-    pub fn new() -> Result<Self, &'static str> {
-        let args: Vec<String> = args().collect();
-        if &args.len() != &3 {
-            return Err("Command line argument count mismatch. Required: 2, file and phrase");
-        }
-        let data = Self::find_first_path(&args[1..])?;
-        Ok(Self {
-            file: String::from(data.0),
-            filter: String::from(data.1),
-        })
-    }
-
-    pub fn file_path(&self) -> &str {
-        &self.file
-    }
-
-    pub fn query(&self) -> &str {
-        &self.filter
-    }
-
+impl PathAnalyzer {
     fn try_is_file(path: &str) -> bool {
         let p = Path::new(path);
         p.exists() && p.is_file()
@@ -43,5 +23,27 @@ impl Config {
             return Ok((&args[1], &args[0]));
         }
         Err("Missing file path.")
+    }
+}
+
+impl Config {
+    pub fn new() -> Result<Self, &'static str> {
+        let args: Vec<String> = args().collect();
+        if &args.len() != &3 {
+            return Err("Command line argument count mismatch. Required: 2, file and phrase");
+        }
+        let data = PathAnalyzer::find_first_path(&args[1..])?;
+        Ok(Self {
+            file: String::from(data.0),
+            filter: String::from(data.1),
+        })
+    }
+
+    pub fn file_path(&self) -> &str {
+        &self.file
+    }
+
+    pub fn query(&self) -> &str {
+        &self.filter
     }
 }

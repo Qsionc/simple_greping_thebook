@@ -1,7 +1,7 @@
 use crate::cfg;
 
 #[cfg(test)]
-mod test  {
+mod test {
     use super::*;
 
     #[test]
@@ -18,7 +18,7 @@ example";
     }
 }
 
-pub struct Runner {}
+pub struct Runner;
 
 impl Runner {
     pub fn run(cfg: cfg::Config) -> Result<(), &'static str> {
@@ -35,7 +35,7 @@ impl Runner {
             false => {
                 println!("Matches found for query '{}':", cfg.query());
                 for line in Self::filter(&file_content, cfg.query()) {
-                    println!("{line}");
+                    println!("{}", line);
                 }
             }
         }
